@@ -24,14 +24,16 @@ public class Curso {
     this.listaInscriptos = listaInscriptos;
   }
   
-  public Curso(Integer id, String nombre, Integer creditos, 
-      Integer cupo, Docente docenteAsignado) {
-    this.id = id;
+  public Curso(String nombre, Integer creditos, Integer cupo) {
     this.nombre = nombre;
     this.creditos = creditos;
     this.cupo = cupo;
-    this.docenteAsignado = docenteAsignado;
+    this.docenteAsignado = null;
     this.listaInscriptos = new ArrayList<Alumno>();
+  }
+
+  public Curso(){
+    
   }
 
   public void asignarDocente(Docente docente) throws DocenteExcedidoException{

@@ -6,7 +6,8 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
-import isi.dan.practicas.practica1.exception.RecursoNoEncontrado;
+import isi.dan.practicas.practica1.exception.RecursoNoEncontradoException;
+import isi.dan.practicas.practica1.model.Curso;
 import isi.dan.practicas.practica1.model.Docente;
 
 @Service
@@ -17,7 +18,7 @@ public class DocenteImpl implements DocenteService{
     private List<Docente> listaDocentes = new ArrayList<Docente>();;
 
     @Override
-    public Docente guardarDocente(Docente d) throws RecursoNoEncontrado{
+    public Docente guardarDocente(Docente d) throws RecursoNoEncontradoException{
         if(d.getId() != null){
             d.setId(id);
             id++;
@@ -28,19 +29,19 @@ public class DocenteImpl implements DocenteService{
                 this.listaDocentes.set(this.listaDocentes.indexOf(d), d);
             }
             else {
-                throw new RecursoNoEncontrado("Docente", d.getId());
+                throw new RecursoNoEncontradoException("Docente", d.getId());
             }
         }
         return d;
     }
 
     @Override
-    public Optional<Docente> buscarDocentePorId(Integer id) throws RecursoNoEncontrado{
+    public Optional<Docente> buscarDocentePorId(Integer id) throws RecursoNoEncontradoException{
         if(this.existeEnLista(id)){
             return this.listaDocentes.stream().filter(c -> c.getId().equals(id)).findFirst();
         }
         else {
-            throw new RecursoNoEncontrado("Docente", id);
+            throw new RecursoNoEncontradoException("Docente", id);
         }
     }
 
@@ -50,14 +51,14 @@ public class DocenteImpl implements DocenteService{
     }
 
     @Override
-    public void bajaDocente(Integer id) throws RecursoNoEncontrado{
+    public void bajaDocente(Integer id) throws RecursoNoEncontradoException{
         if(this.existeEnLista(id)){
             Docente docente = this.listaDocentes.stream().filter(c -> c.getId().equals(id)).findFirst().get();
             docente.getCursosDictados().stream().forEach(c -> c.removerDocente());
             this.listaDocentes.remove(docente);
         }
         else {
-            throw new RecursoNoEncontrado("Docente", id);
+            throw new RecursoNoEncontradoException("Docente", id);
         }
     }
     
@@ -69,5 +70,17 @@ public class DocenteImpl implements DocenteService{
             }
         }
         return veredicto;
+    }
+
+    @Override
+    public void agregarCurso(Docente docente, Curso curso) throws RecursoNoEncontradoException {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'agregarCurso'");
+    }
+
+    @Override
+    public Integer getCantidadCursosDictados(Docente docente) throws RecursoNoEncontradoException {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getCantidadCursosDictados'");
     }
 }

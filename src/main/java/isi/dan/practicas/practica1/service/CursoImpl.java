@@ -7,7 +7,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import isi.dan.practicas.practica1.exception.RecursoNoEncontrado;
+import isi.dan.practicas.practica1.exception.RecursoNoEncontradoException;
 import isi.dan.practicas.practica1.model.Alumno;
 import isi.dan.practicas.practica1.model.Curso;
 import isi.dan.practicas.practica1.model.Docente;
@@ -25,8 +25,8 @@ public class CursoImpl implements CursoService{
     private List<Curso> listaCursos = new ArrayList<Curso>();;
 
     @Override
-    public Curso guardarCurso(Curso c) throws RecursoNoEncontrado{
-                if(c.getId() != null){
+    public Curso guardarCurso(Curso c) throws RecursoNoEncontradoException{
+        if(c.getId() == null){
             c.setId(id);
             id++;
             this.listaCursos.add(c);
@@ -36,19 +36,19 @@ public class CursoImpl implements CursoService{
                 this.listaCursos.set(this.listaCursos.indexOf(c), c);
             }
             else {
-                throw new RecursoNoEncontrado("Curso", c.getId());
+                throw new RecursoNoEncontradoException("Curso", c.getId());
             }
         }
         return c;
     }
 
     @Override
-    public Optional<Curso> buscarCursoPorId(Integer id) throws RecursoNoEncontrado{
+    public Optional<Curso> buscarCursoPorId(Integer id) throws RecursoNoEncontradoException{
         if(this.existeEnLista(id)){
             return this.listaCursos.stream().filter(c -> c.getId().equals(id)).findFirst();
         }
         else {
-            throw new RecursoNoEncontrado("Curso", id);
+            throw new RecursoNoEncontradoException("Curso", id);
         }
     }
 
@@ -58,7 +58,7 @@ public class CursoImpl implements CursoService{
     }
 
     @Override
-    public void bajaCurso(Integer id) throws RecursoNoEncontrado{
+    public void bajaCurso(Integer id) throws RecursoNoEncontradoException{
         if(this.existeEnLista(id)){
             Curso curso = this.listaCursos.stream().filter(c -> c.getId().equals(id)).findFirst().get();
             curso.getDocenteAsignado().removerCurso(curso);
@@ -66,7 +66,7 @@ public class CursoImpl implements CursoService{
             this.listaCursos.remove(curso);
         }
         else {
-            throw new RecursoNoEncontrado("Curso", id);
+            throw new RecursoNoEncontradoException("Curso", id);
         }
     }
 

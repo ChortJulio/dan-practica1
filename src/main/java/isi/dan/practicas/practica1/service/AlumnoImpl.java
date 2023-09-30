@@ -6,7 +6,7 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
-import isi.dan.practicas.practica1.exception.RecursoNoEncontrado;
+import isi.dan.practicas.practica1.exception.RecursoNoEncontradoException;
 import isi.dan.practicas.practica1.model.Alumno;
 
 @Service
@@ -17,7 +17,7 @@ public class AlumnoImpl implements AlumnoService{
     private List<Alumno> listaAlumnos = new ArrayList<Alumno>();
 
     @Override
-    public Alumno guardarAlumno(Alumno a) throws RecursoNoEncontrado{
+    public Alumno guardarAlumno(Alumno a) throws RecursoNoEncontradoException{
         if(a.getId() != null){
             a.setId(id);
             AlumnoImpl.id++;
@@ -28,19 +28,19 @@ public class AlumnoImpl implements AlumnoService{
                 this.listaAlumnos.set(this.listaAlumnos.indexOf(a), a);
             }
             else {
-                throw new RecursoNoEncontrado("Alumno", a.getId());
+                throw new RecursoNoEncontradoException("Alumno", a.getId());
             }
         }
         return a;
     }
 
     @Override
-    public Optional<Alumno> buscarAlumnoPorId(Integer id) throws RecursoNoEncontrado{
+    public Optional<Alumno> buscarAlumnoPorId(Integer id) throws RecursoNoEncontradoException{
         if(this.existeEnLista(id)){
             return this.listaAlumnos.stream().filter(c -> c.getId().equals(id)).findFirst();
         }
         else {
-            throw new RecursoNoEncontrado("Alumno", id);
+            throw new RecursoNoEncontradoException("Alumno", id);
         }
     }
 
@@ -50,14 +50,14 @@ public class AlumnoImpl implements AlumnoService{
     }
 
     @Override
-    public void bajaAlumno(Integer id) throws RecursoNoEncontrado{
+    public void bajaAlumno(Integer id) throws RecursoNoEncontradoException{
         if(this.existeEnLista(id)){
             Alumno alumno = this.listaAlumnos.stream().filter(c -> c.getId().equals(id)).findFirst().get();
             alumno.getCursosInscriptos().stream().forEach(c -> c.removerAlumno(alumno));
             this.listaAlumnos.remove(alumno);
         }
         else {
-            throw new RecursoNoEncontrado("Alumno", id);
+            throw new RecursoNoEncontradoException("Alumno", id);
         }
     }
     private boolean existeEnLista(Integer id) {

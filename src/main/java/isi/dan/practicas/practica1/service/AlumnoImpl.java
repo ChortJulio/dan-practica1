@@ -1,16 +1,20 @@
 package isi.dan.practicas.practica1.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
+import org.springframework.stereotype.Service;
 
 import isi.dan.practicas.practica1.exception.RecursoNoEncontrado;
 import isi.dan.practicas.practica1.model.Alumno;
 
+@Service
 public class AlumnoImpl implements AlumnoService{
 
-    private static Integer id;
+    private static Integer id = 1;
     
-    private List<Alumno> listaAlumnos;
+    private List<Alumno> listaAlumnos = new ArrayList<Alumno>();
 
     @Override
     public Alumno guardarAlumno(Alumno a) throws RecursoNoEncontrado{

@@ -1,15 +1,18 @@
 package isi.dan.practicas.practica1.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import isi.dan.practicas.practica1.exception.RecursoNoEncontrado;
 import isi.dan.practicas.practica1.model.Alumno;
 import isi.dan.practicas.practica1.model.Curso;
 import isi.dan.practicas.practica1.model.Docente;
 
+@Service
 public class CursoImpl implements CursoService{
 
     @Autowired
@@ -17,9 +20,9 @@ public class CursoImpl implements CursoService{
     @Autowired
     private AlumnoService alumnoService;
 
-    private static Integer id;
+    private static Integer id = 1;
     
-    private List<Curso> listaCursos;
+    private List<Curso> listaCursos = new ArrayList<Curso>();;
 
     @Override
     public Curso guardarCurso(Curso c) throws RecursoNoEncontrado{
